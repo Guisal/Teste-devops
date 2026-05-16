@@ -1,0 +1,23 @@
+trigger:
+- main
+- develop
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: ArchiveFiles@2
+  displayName: 'Compactar arquivos do site'
+  inputs:
+    rootFolderOrFile: '$(Build.SourcesDirectory)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/site.zip'
+    replaceExistingArchive: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publicar artefato ZIP'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/site.zip'
+    ArtifactName: 'site-html'
+    publishLocation: 'Container'
